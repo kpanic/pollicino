@@ -41,6 +41,7 @@ sudo apt-get install redis-server
 
 * Tests :)
 * Timeouts
+* Unify responses
 * Code organization
 * Deal with geocoding typos
 * ...etc
