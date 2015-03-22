@@ -8,11 +8,17 @@ class Geocoder(object):
     @classmethod
     def from_config(cls, config):
         backends = config.get('backends')
-        backend_instances = [backend() for backend in backends]
+        backend_instances = []
+        for backend_entry in backends:
+            for _, backend in backend_entry.iteritems():
+                backend_class = backend['class']
+                params = backend.get('params', {})
+                backend_instance = backend_class(**params)
+                backend_instances.append(backend_instance)
 
         return cls(backend_instances)
 
-    def __init__(self, backends, **kwargs):
+    def __init__(self, backends):
         self.backends = backends
 
     def geocode(self, address):
