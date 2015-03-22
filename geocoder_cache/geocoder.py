@@ -15,6 +15,8 @@ class Geocoder(object):
     @classmethod
     def from_config(cls, config):
         backends = config.get('backends')
+        if backends is None:
+            raise KeyError("Specify at least one geocoding backend in your config")
         backend_instances = []
         for backend_entry in backends:
             for _, backend in backend_entry.iteritems():
@@ -42,6 +44,9 @@ class GeocoderClient(object):
     @classmethod
     def from_config(cls, config):
         cache = config.get('cache')
+        if cache is None:
+            raise KeyError('Specify a "cache" entry in your config')
+
         geocoder = Geocoder.from_config(config)
 
         cache_client = cls(geocoder, cache)
