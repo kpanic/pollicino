@@ -20,7 +20,7 @@ geocoder = GeocoderClient.from_config(config.CONFIG)
 # Get from the cache or geocode the address
 # Tuti Bridge, Sudan. Find out a place that is in OSM but not on Google Maps or
 # the reverse to double check the fallback
-result = geocoder.geocode('Via dei recoaro')
+result = geocoder.geocode('Via Recoaro, Broni')
 print result
 
 # Formatted for your convenience
