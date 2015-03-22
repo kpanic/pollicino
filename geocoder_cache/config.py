@@ -7,8 +7,7 @@ from geocoder_cache import geocoder
 
 cache = SimpleCache()
 
-# Sudan
-COUNTRY = 'SD'
+COUNTRY = 'it'
 
 CONFIG = {
     # List of backends to fallback to
