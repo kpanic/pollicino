@@ -8,7 +8,7 @@ from redis_cache.rediscache import CacheMissException
 from geocoder_cache import geocoder
 
 
-class ConfigTestCase(unittest.TestCase):
+class GeocoderClientTestCase(unittest.TestCase):
     def setUp(self):
         self.nominatim_mock = mock.MagicMock()
         self.google_mock = mock.MagicMock()
