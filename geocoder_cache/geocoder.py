@@ -1,6 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from redis_cache.rediscache import CacheMissException
+from geopy import Nominatim
+
+
+class NominatimWrapper(Nominatim):
+    def geocode(self, query, **kwargs):
+        kwargs['addressdetails'] = True
+        return super(NominatimWrapper, self).geocode(query, **kwargs)
 
 
 class Geocoder(object):
