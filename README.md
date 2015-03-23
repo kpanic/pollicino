@@ -4,6 +4,15 @@
 
 * Free software: LGPL3 license
 
+**Description**
+
+The aim of this project is to be able to fallback between multiple geocoding
+backends (OpenStreetMap, Google maps and so on), cache the results to avoid to
+consume quota and speed up geolookups.
+
+There might be different cache backends support in the future other than redis.
+(ex: Elasticsearch for fuzzy matching, autocompletion)
+
 **WARNING**
 
 **Work in Progress**, use at your own risk ;)
