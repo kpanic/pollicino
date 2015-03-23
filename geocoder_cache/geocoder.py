@@ -35,9 +35,10 @@ class Geocoder(object):
         for backend in self.backends:
             result = backend.geocode(address)
             if result is not None:
+                result = result.raw
                 break
 
-        return result.raw
+        return result
 
 
 class GeocoderClient(object):
