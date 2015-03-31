@@ -3,34 +3,30 @@
 import unittest
 import mock
 
-from redis_cache.rediscache import CacheMissException
-
-from geocoder_cache import geocoder
+from pollicino import geocoder, exceptions
 
 
 class GeocoderClientTestCase(unittest.TestCase):
     def setUp(self):
-        self.nominatim_mock = mock.MagicMock()
-        self.google_mock = mock.MagicMock()
-        self.cache_mock = mock.MagicMock()
-        self.cache_mock.get_json.side_effect = [
-            CacheMissException, mock.MagicMock()]
+        self.geocoder_mock = mock.MagicMock()
+        self.store_mock = mock.MagicMock()
+        self.store_mock().search.side_effect = [
+            exceptions.StoreDataNotFound, mock.MagicMock()]
 
         self.config = {
             "backends": [
                 {
                     "openstreetmap": {
-                        "class": self.nominatim_mock,
+                        "class": self.geocoder_mock,
                         "params": {"country_bias": 'XX'}
-                    }
-                },
-                {
-                    "google": {
-                        "class": self.google_mock,
                     }
                 }
             ],
-            "cache": self.cache_mock
+            "storage": [{
+                "class": self.store_mock,
+                "params": {"host": 'localhost'},
+                "ttl": "1"
+            }]
         }
 
     def test_expect_geocoder_instance_with_minimal_config(self):
@@ -41,8 +37,7 @@ class GeocoderClientTestCase(unittest.TestCase):
         geocoder_client = geocoder.GeocoderClient.from_config(self.config)
         geocoder_client.geocode('A sunny street')
 
-        self.nominatim_mock().geocode.assert_called_once_with('a sunny street')
-        self.assertFalse(self.google_mock().geocode.call_count)
+        self.geocoder_mock().geocode.assert_called_once_with('A sunny street')
 
     def test_expect_second_call_is_cached(self):
         geocoder_client = geocoder.GeocoderClient.from_config(self.config)
@@ -50,11 +45,10 @@ class GeocoderClientTestCase(unittest.TestCase):
         geocoder_client.geocode('A sunny street')
 
         # geocoder call
-        self.nominatim_mock().geocode.assert_called_once_with('a sunny street')
+        self.geocoder_mock().geocode.assert_called_once_with('A sunny street')
 
-        # cache hit
-        self.cache_mock.get_json.assert_called_with('a sunny street')
-        self.assertFalse(self.google_mock().geocode.call_count)
+        # store hit
+        self.store_mock().search.assert_called_with('A sunny street')
 
 
 class GeocoderConfigTestCase(unittest.TestCase):

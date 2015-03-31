@@ -1,81 +1,84 @@
-## Geocoder Cache
+## Pollicino
 
-## Multiple geocoders, spiced up with persistent cache
+## Street search, spiced up with multiple storage and geocoders
+
+### Find Pollicino by following breadcrumbs in the woods!
 
 * Free software: LGPL3 license
 
 **Description**
 
-The aim of this project is to be able to fallback between multiple geocoding
-backends (OpenStreetMap, Google maps and so on), cache the results to avoid to
-consume quota and speed up geolookups.
+The aim of this project is to be able to use multiple geocoding
+backends (OpenStreetMap, Google maps and so on) and execute search in a storage
+(elasticsearch, redis, etc)
 
-There might be different cache backends support in the future other than redis.
-(ex: Elasticsearch for fuzzy matching, autocompletion)
+There might be different storage backends support in the future other than the
+aforementioned.
 
 **WARNING**
 
-**Work in Progress**, use at your own risk ;)
+**Work in Progress**
 
-## Do-not-usage (yet ;))
+## Do-not-use (yet ;)) (really)
 
 ```python
-from geocoder_cache import config
+from pollicino import config
 
-from geocoder_cache.geocoder import GeocoderClient
+from pollicino.geocoder import GeocoderClient
 
 geocoder = GeocoderClient.from_config(config.CONFIG)
 
-# Get from the cache or geocode the address
-# Tuti Bridge, Sudan. Find out a place that is in OSM but not on Google Maps or
-# the reverse to double check the fallback
-result = geocoder.geocode('Via Recoaro, Broni')
+result = geocoder.geocode('Via Recoaro 1, Broni')
 print result
 
 # Formatted for your convenience
 
-{
-    u'display_name': u'Via Recoaro, Cascina Edri, Broni, PV, LOM, 27049, Italia',
-    u'importance': 0.4,
-    u'place_id': u'65292550',
-    u'lon': u'9.2735356',
-    u'boundingbox': [u'45.0620131', u'45.0691679', u'9.2664604', u'9.2755081'],
-    u'osm_type': u'way',
-    u'licence': u'Data \xa9 OpenStreetMap contributors, ODbL 1.0. http://www.openstreetmap.org/copyright',
-    u'osm_id': u'39148840',
-    u'lat': u'45.0660006',
-    u'type': u'unclassified',
-    u'class': u'highway',
-    u'address':
-    {
-        u'country': u'Italia',
-        u'county': u'PV',
-        u'suburb': u'Cascina Edri',
-        u'state': u'LOM',
-        u'postcode': u'27049',
-        u'country_code': u'it',
-        u'village': u'Broni',
-        u'road': u'Via Recoaro'
-    }
-}
+{'city': u'Broni',
+ 'coordinates': [9.2732744, 45.0688205],
+ 'country': u'Italy',
+ 'country_code': u'IT',
+ 'county': u'Lombardia',
+ 'full_address': u'Via dei Recoaro, 1, 27043 Broni PV, Italy',
+ 'house_number': u'1',
+ 'neighbourhood': None,
+ 'postcode': u'27043',
+ 'road': u'Via dei Recoaro',
+ 'state': u'Lombardia',
+ 'suburb': u'Pavia'}
 ```
 
 ## Requirements
 
-* Install redis-server with your favorite package manager to cache geocoded
-  responses
+* Install elasticsearch with your favorite package manager: 
 
-Example on Debian based distributions:
+Example on Debian based distributions 
+(after adding the elasticsearch repository):
 
 ```
-sudo apt-get install redis-server
+sudo apt-get install elasticsearch
 ```
+
+* Install the ICU Analisys plugin for Elasticsearch
+
+```
+sudo bin/plugin install elasticsearch/elasticsearch-analysis-icu/2.5.0
+```
+
+And restart Elasticsearch
+
+**NOTE**
+on Debian based distributions the `plugin` command is located in:
+
+`/usr/share/elasticsearch/bin/plugin`
 
 ## TODO
 
 * Tests :)
+* Check how the response coming from google changes to handle corner cases
+* Localize the analyzers based on configuration (Currently the `de_analyzer` is
+  hardcoded)
+* Add the OpenStreetMap importer script
 * Timeouts
 * Unify responses
 * Code organization
-* Deal with geocoding typos
 * ...etc

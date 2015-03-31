@@ -13,7 +13,8 @@ with open('README.md') as readme_file:
 
 requirements = [
     'geopy==1.9.1',
-    'redis-simple-cache==0.0.7'
+    'elasticsearch==1.4.0',
+    'six==1.9.0'
 ]
 
 test_requirements = [
@@ -23,23 +24,23 @@ test_requirements = [
 ]
 
 setup(
-    name='geocoder-cache',
+    name='pollicino',
     version='0.1.0',
-    description="Multiple geocoders, spiced up with persistent cache",
+    description="Street search, spiced up with multiple storage and geocoders",
     long_description=readme,
     author="Marco Milanesi",
     author_email='kpanic@gmail.com',
-    url='https://github.com/kpanic/geocoder-cache',
+    url='https://github.com/kpanic/pollicino',
     packages=[
-        'geocoder_cache',
+        'pollicino',
     ],
-    package_dir={'geocoder_cache':
-                 'geocoder_cache'},
+    package_dir={'pollicino':
+                 'pollicino'},
     include_package_data=True,
     install_requires=requirements,
     license="LGPL3",
     zip_safe=False,
-    keywords='geocoder cache',
+    keywords='geocoder elasticsearch openstreetmap pluggable pollicino',
     classifiers=['License :: OSI Approved :: '
                  'GNU Lesser General Public License v3 (LGPLv3)',
                  'Programming Language :: Python :: 2',
