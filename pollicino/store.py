@@ -58,55 +58,17 @@ class Elasticsearch(Backend):
             "index": {
                 "analysis": {
                     "analyzer": {
-                        "de_analyzer": {
+                        "autocomplete_analyzer": {
                             "type": "custom",
                             "filter": [
                                 "icu_normalizer",
-                                "de_stop_filter",
                                 "icu_folding",
                                 "edge_ngram",
                             ],
-                            "tokenizer": "icu_tokenizer"
-                        },
-                        "en_analyzer": {
-                            "type": "custom",
-                            "filter": [
-                                "icu_normalizer",
-                                "en_stop_filter",
-                                "icu_folding",
-                                "edge_ngram",
-                            ],
-                            "tokenizer": "icu_tokenizer"
-                        },
-                        "es_analyzer": {
-                            "type": "custom",
-                            "filter": [
-                                "icu_normalizer",
-                                "es_stop_filter",
-                                "icu_folding",
-                                "edge_ngram",
-                            ],
-                            "tokenizer": "icu_tokenizer"
-                        },
-                        "default": {
-                            "type": "custom",
-                            "filter": ["icu_normalizer", "icu_folding"],
                             "tokenizer": "icu_tokenizer"
                         }
                     },
                     "filter": {
-                        "de_stop_filter": {
-                            "type": "stop",
-                            "stopwords": ["_german_"]
-                        },
-                        "en_stop_filter": {
-                            "type": "stop",
-                            "stopwords": ["_english_"]
-                        },
-                        "es_stop_filter": {
-                            "type": "stop",
-                            "stopwords": ["_spanish_"]
-                        },
                         "edge_ngram": {
                             "type":"edgeNGram",
                             "min_gram":1,
@@ -120,7 +82,7 @@ class Elasticsearch(Backend):
         "mappings": {
             "address": {
                 "_all": {
-                    "analyzer": "de_analyzer",
+                    "analyzer": "autocomplete_analyzer",
                 },
                 "properties": {
                     "location": {
