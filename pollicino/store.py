@@ -73,7 +73,7 @@ class Elasticsearch(Backend):
                             "filter": [
                                 "icu_normalizer",
                                 "en_stop_filter",
-                                "icu_folding"
+                                "icu_folding",
                                 "edge_ngram",
                             ],
                             "tokenizer": "icu_tokenizer"
@@ -83,7 +83,7 @@ class Elasticsearch(Backend):
                             "filter": [
                                 "icu_normalizer",
                                 "es_stop_filter",
-                                "icu_folding"
+                                "icu_folding",
                                 "edge_ngram",
                             ],
                             "tokenizer": "icu_tokenizer"
