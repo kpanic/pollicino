@@ -50,17 +50,8 @@ class Redis(Backend):
 
 
 class Elasticsearch(Backend):
-    index = 'geo-data'
+    index = 'pollicino'
     doc_type = 'address'
-
-    search_fields = ['city',
-                     'house_number^2',
-                     'country',
-                     'suburb',
-                     'state',
-                     'postcode',
-                     'country_code',
-                     'road']
 
     index_bootstrap = {
         "settings": {
@@ -72,8 +63,8 @@ class Elasticsearch(Backend):
                             "filter": [
                                 "icu_normalizer",
                                 "de_stop_filter",
-                                "de_stem_filter",
-                                "icu_folding"
+                                "icu_folding",
+                                "edge_ngram",
                             ],
                             "tokenizer": "icu_tokenizer"
                         },
@@ -82,8 +73,9 @@ class Elasticsearch(Backend):
                             "filter": [
                                 "icu_normalizer",
                                 "en_stop_filter",
-                                "en_stem_filter",
-                                "icu_folding"],
+                                "icu_folding"
+                                "edge_ngram",
+                            ],
                             "tokenizer": "icu_tokenizer"
                         },
                         "es_analyzer": {
@@ -91,8 +83,8 @@ class Elasticsearch(Backend):
                             "filter": [
                                 "icu_normalizer",
                                 "es_stop_filter",
-                                "es_stem_filter",
                                 "icu_folding"
+                                "edge_ngram",
                             ],
                             "tokenizer": "icu_tokenizer"
                         },
@@ -107,38 +99,43 @@ class Elasticsearch(Backend):
                             "type": "stop",
                             "stopwords": ["_german_"]
                         },
-                        "de_stem_filter": {
-                            "type": "stemmer",
-                            "name": "minimal_german"
-                        },
                         "en_stop_filter": {
                             "type": "stop",
                             "stopwords": ["_english_"]
-                        },
-                        "en_stem_filter": {
-                            "type": "stemmer",
-                            "name": "minimal_english"
                         },
                         "es_stop_filter": {
                             "type": "stop",
                             "stopwords": ["_spanish_"]
                         },
-                        "es_stem_filter": {
-                            "type": "stemmer",
-                            "name": "light_spanish"
-                        },
+                        "edge_ngram": {
+                            "type":"edgeNGram",
+                            "min_gram":1,
+                            "max_gram":15
+
+                        }
                     }
                 }
             }
         },
         "mappings": {
             "address": {
+                "_all": {
+                    "analyzer": "de_analyzer",
+                },
                 "properties": {
                     "location": {
                         "properties": {
-                            "street": {
+                            "country": {
                                 "type": "string",
-                                "analyzer": "de_analyzer"
+                            },
+                            "city": {
+                                "type": "string",
+                            },
+                            "suburb": {
+                                "type": "string",
+                            },
+                            "road": {
+                                "type": "string",
                             },
                             "coordinates": {
                                 "type": "geo_point",
@@ -178,12 +175,19 @@ class Elasticsearch(Backend):
         return ElasticsearchResponse.serialize(search_result)
 
     def build_query(self, text):
-        return {
+        query = {
             "query": {
-                "query_string": {
-                    "fields": self.search_fields,
-                    "query": text,
-                    "default_operator": "AND"
+                "filtered": {
+                    "query": {
+                        "match": {
+                            "_all": {
+                                "query": text,
+                                "operator": "and",
+                            }
+                        }
+                    }
                 }
             }
         }
+
+        return query
