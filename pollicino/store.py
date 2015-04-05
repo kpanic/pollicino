@@ -2,6 +2,7 @@
 
 import abc
 
+from walrus import Database
 import elasticsearch
 
 from pollicino.exceptions import StoreDataNotFound
@@ -40,13 +41,19 @@ class Backend(object):
 
 
 class Redis(Backend):
-    get_namespace = 'pollicino:address:{}'.format
+    def __init__(self, **params):
+        db = Database(**params)
+        self.ac = db.autocomplete()
 
     def search(self, query):
-        pass
+        search_result = self.ac.search(query)
+        if not search_result:
+            raise StoreDataNotFound()
+        return search_result
 
-    def set(self, key, value):
-        pass
+    def set(self, body):
+        full_address = body.get('full_address')
+        self.ac.store(full_address, data=body)
 
 
 class Elasticsearch(Backend):
