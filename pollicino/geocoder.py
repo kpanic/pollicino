@@ -12,21 +12,24 @@ from pollicino.store import Store
 class OpenStreetMap(Nominatim):
     def geocode(self, query, **kwargs):
         kwargs['addressdetails'] = True
-        kwargs['exactly_one'] = True
-        response = super(OpenStreetMap, self).geocode(query, **kwargs)
-        if response is not None:
-            geo_serializer = GeocoderResponse(provider='openstreetmap')
-            response = geo_serializer.serialize(response)
-        return response
+        kwargs['exactly_one'] = False
+        responses = super(OpenStreetMap, self).geocode(query, **kwargs)
+        if responses:
+            geo_serializer = GeocoderResponse(provider='google')
+            responses = [geo_serializer.serialize(response)
+                         for response in responses]
+        return responses
 
 
 class Google(GoogleV3):
     def geocode(self, query, **kwargs):
-        response = super(Google, self).geocode(query, **kwargs)
-        if response is not None:
+        kwargs['exactly_one'] = False
+        responses = super(Google, self).geocode(query, **kwargs)
+        if responses:
             geo_serializer = GeocoderResponse(provider='google')
-            response = geo_serializer.serialize(response)
-        return response
+            responses = [geo_serializer.serialize(response)
+                         for response in responses]
+        return responses
 
 
 class GeoContainer(object):
@@ -75,19 +78,20 @@ class GeocoderClient(object):
 
     def geocode(self, address):
         try:
-            response = []
+            responses = []
             for store in self.storage:
-                result = store.search(address)
-                if result is not None:
-                    response.extend(result)
+                results = store.search(address)
+                if results:
+                    responses.extend(results)
         except StoreDataNotFound:
-            response = self.geocoder.geocode(address)
-            if response is None:
+            responses = self.geocoder.geocode(address)
+            if not responses:
                 raise ValueError("Address not found %s", address)
             # TODO: See how "redis autocomplete" works to figure out if there's
             # the need only of a one key namespace
             # If yes, it could be encapsulated in the Redis backend
-            for store in self.storage:
-                store.set(response)
+            for response in responses:
+                for store in self.storage:
+                    store.set(response)
 
-        return response
+        return responses
