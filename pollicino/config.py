@@ -18,9 +18,9 @@ CONFIG = {
     # Other storage could be plugged in, additionally to store.Elasticsearch
     "storage": [
         {
-            "class": store.Elasticsearch,
+            "class": store.Redis,
             "params": {"host": "localhost"},
-            "ttl": "30d"
+            # "ttl": "30d"
         }
     ]
 }
