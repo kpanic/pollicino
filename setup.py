@@ -14,7 +14,8 @@ with open('README.md') as readme_file:
 requirements = [
     'geopy==1.9.1',
     'elasticsearch==1.4.0',
-    'six==1.9.0'
+    'six==1.9.0',
+    'walrus==0.2.2'
 ]
 
 test_requirements = [

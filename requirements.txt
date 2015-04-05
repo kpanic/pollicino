@@ -2,3 +2,4 @@ wheel==0.23.0
 geopy==1.9.1
 elasticsearch==1.4.0
 six==1.9.0
+walrus==0.2.2
