@@ -47,6 +47,18 @@ print result
  'suburb': u'Pavia'}
 ```
 
+# Warming up the Elasticsearch storage from an OpenStreetMap data excerpt
+
+Execute: `./scripts/import_addresses.py`
+You should have in the `pollicino` index an excerpt of the streets of
+**Berlin**.
+Try to search for `Landsberg`, it should match `Landsberg*` from Elasticsearch,
+otherwise fallback to Google Maps
+
+**NOTE**
+Per **Google Maps Terms of Use**, the data can be cached for 30 days maximum, this
+is specified in the configuration of `Pollicino`
+
 ## Requirements
 
 * Install elasticsearch with your favorite package manager: 
