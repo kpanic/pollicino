@@ -89,7 +89,7 @@ on Debian based distributions the `plugin` command is located in:
 * Check how the response coming from google changes to handle corner cases
 * Localize the analyzers based on configuration (Currently the `de_analyzer` is
   hardcoded)
-* Add the OpenStreetMap importer script
+* <del>Add the OpenStreetMap importer script<del>
 * Timeouts
 * Unify responses
 * Code organization
