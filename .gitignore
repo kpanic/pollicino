@@ -42,5 +42,7 @@ output/*/index.html
 # Sphinx
 docs/_build
 
-# data/ folder, should contain street data to lookup from
-data/
+# Do not ignore the excerpt
+!data/excerpt_berlin_streets.csv
+# data/berlin_streets.csv it's too big to put in github
+data/berlin_streets.csv
