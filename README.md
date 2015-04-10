@@ -1,8 +1,8 @@
-## Pollicino
+# Pollicino
 
 ## Street search, spiced up with multiple storage and geocoders
 
-### Find Pollicino by following breadcrumbs in the woods!
+## Find Pollicino by following breadcrumbs in the woods!
 
 * Free software: LGPL3 license
 
@@ -14,10 +14,6 @@ backends (OpenStreetMap, Google maps and so on) and execute search in a storage
 
 There might be different storage backends support in the future other than the
 aforementioned.
-
-**WARNING**
-
-**Work in Progress**
 
 ## Do-not-use (yet ;)) (really)
 
@@ -47,7 +43,7 @@ print result
  'suburb': u'Pavia'}
 ```
 
-# Warming up the Elasticsearch storage from an OpenStreetMap data excerpt
+## Warming up the Elasticsearch storage from an OpenStreetMap data excerpt
 
 Execute: `./scripts/import_addresses.py`
 You should have in the `pollicino` index an excerpt of the streets of
@@ -58,6 +54,60 @@ otherwise fallback to Google Maps
 **NOTE**
 Per **Google Maps Terms of Use**, the data can be cached for 30 days maximum, this
 is specified in the configuration of `Pollicino`
+
+## Demo example api plus autocomplete frontend
+
+You can find a bare bone "web interface" in [examples](examples)
+
+To play with the demo, launch the development server:
+
+`python examples/api.py`
+
+When pointing your browser to http://localhost:5000 you should see an input box.
+
+If you would start to type *Kasta*, a response coming from the API
+should be similar to this one (when using the excerpt of OpenStreetMap provided
+in this repo):
+
+```javascript
+[
+    {
+        "city": "",
+        "coordinates": [
+            "7.0119376",
+            "51.4605600"
+        ],
+        "full_address": "Kastanienallee   ",
+        "house_number": "",
+        "postcode": "",
+        "road": "Kastanienallee",
+        "suburb": ""
+    },
+    {
+        "city": "",
+        "coordinates": [
+            "8.6034984",
+            "52.3848947"
+        ],
+        "full_address": "Kastanienweg   ",
+        "house_number": "",
+        "postcode": "",
+        "road": "Kastanienweg",
+        "suburb": ""
+    }
+
+ [...]
+
+]
+```
+
+These are just the first two entries, I truncated the rest of the response for brevity.
+By default the results returned are 10.
+
+Note that you should see from the browser a drop down with matching results
+from OpenStreetMap or the Google Maps API if the address has been not found in
+the storage.
+
 
 ## Requirements
 
