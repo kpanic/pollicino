@@ -10,7 +10,7 @@ CONFIG = {
     # housenumbers, while OpenStreetMap, might lack them
     "backends": [
         {
-            "openstreetmap": {
+            "google": {
                 "class": geocoder.Google,
             }
         }
