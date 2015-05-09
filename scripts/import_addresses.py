@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import csv
+import sys
 from os.path import dirname, realpath
 
 from pollicino.store import Store
@@ -13,45 +14,44 @@ pwd = dirname(realpath(__file__))
 
 data_path = '%s/../data/excerpt_berlin_streets.csv' % pwd
 
-
-def filter_out_incomplete_data(addresses):
-    address_components = []
-
-    for address in addresses:
-        if address[0] and not (str.isalpha(address[5]) or
-                               str.isalpha(address[6])):
-            components = map(lambda component: component.strip(), address)
-            address_components.append(components)
-
-    return address_components
+csv.field_size_limit(sys.maxsize)
 
 
-def store_addresses(address_components):
+def prepare_addresses(address_components):
     for component in address_components:
+        # If it has not street and coordinates are not float, skip
+        if not (all([component['street'],
+                     component['city']]) and not
+                (str.isalpha(component['lat']) or
+                 str.isalpha(component['lon']))):
+            continue
+
+        full_address = ' '.join([
+            component['street'],
+            component['housenumber'],
+            component['suburb'],
+            component['postcode'],
+            component['city'],
+            ])
+
         address = {}
         address.update({
-            "full_address": ' '.join(component[0:4]),
-            "house_number": component[1],
-            "city": component[4],
-            "suburb": component[3],
-            "postcode": component[2],
-            "road": component[0],
-            "coordinates": [component[5], component[6]]
+            "full_address": full_address,
+            "house_number": component['housenumber'],
+            "city": component['city'],
+            "suburb": component['suburb'],
+            "postcode": component['postcode'],
+            "road": component['street'],
+            "coordinates": [component['lon'], component['lat']]
         })
-        # Use just the first storage for the moment
-        store[0].set(address)
+        yield address
+
 
 with open(data_path) as fd:
-    reader = csv.reader(fd, delimiter=';')
+    reader = csv.DictReader(fd, delimiter=';')
 
-    # skip the header
-    reader.next()
+    addresses = prepare_addresses(reader)
 
-    address_components = filter_out_incomplete_data(reader)
-
-    print("Total number of addresses to import %s" % len(address_components))
-    print("Importing...")
-
-    store_addresses(address_components)
-
+    print("Bulk indexing...")
+    store[0].bulk(addresses)
     print("Import done.")
