@@ -70,9 +70,9 @@ class Elasticsearch(Backend):
                     },
                     "filter": {
                         "edge_ngram": {
-                            "type":"edgeNGram",
-                            "min_gram":1,
-                            "max_gram":15
+                            "type": "edgeNGram",
+                            "min_gram": 1,
+                            "max_gram": 15
 
                         }
                     }
