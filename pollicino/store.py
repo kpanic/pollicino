@@ -119,7 +119,6 @@ class Elasticsearch(Backend):
         self.backend.indices.create(
             index=self.index, ignore=400, body=self.index_bootstrap)
 
-    # doc_type might be the key
     def set(self, body):
         # TTL harcoded to 30 days per google policy
         self.backend.index(
