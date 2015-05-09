@@ -8,12 +8,12 @@
 
 **Description**
 
-The aim of this project is to be able to use multiple geocoding
-backends (OpenStreetMap, Google maps and so on) and execute search in a storage
-(elasticsearch, redis, etc)
-
-There might be different storage backends support in the future other than the
-aforementioned.
+The aim of this project is to be able to execute search in a populated storage
+(Elasticsearch, redis, etc) and to use multiple geocoding backends
+(OpenStreetMap, Google maps and so on) as a fallback if the address is not
+present.
+The current (and only) storage used is Elasticsearch, there might be different
+storage support in the future. For instance, redis.
 
 ## Do-not-use (yet ;)) (really)
 
@@ -43,6 +43,30 @@ print result
  'suburb': u'Pavia'}
 ```
 
+## System requirements to be installed
+
+* Install elasticsearch with your favorite package manager: 
+
+Example on Debian based distributions 
+(after adding the elasticsearch repository):
+
+```
+sudo apt-get install elasticsearch
+```
+
+* Install the ICU Analisys plugin for Elasticsearch
+
+```
+sudo bin/plugin install elasticsearch/elasticsearch-analysis-icu/2.5.0
+```
+
+And restart Elasticsearch
+
+**NOTE**
+on Debian based distributions the `plugin` command is located in:
+
+`/usr/share/elasticsearch/bin/plugin`
+
 ## Warming up the Elasticsearch storage from an OpenStreetMap data excerpt
 
 Execute: `./scripts/import_addresses.py`
@@ -53,7 +77,7 @@ otherwise fallback to Google Maps
 
 **NOTE**
 Per **Google Maps Terms of Use**, the data can be cached for 30 days maximum, this
-is specified in the configuration of `Pollicino`
+will be handled at some point in `pollicino`
 
 ## Demo example api plus autocomplete frontend
 
@@ -107,40 +131,3 @@ By default the results returned are 10.
 Note that you should see from the browser a drop down with matching results
 from OpenStreetMap or the Google Maps API if the address has been not found in
 the storage.
-
-
-## Requirements
-
-* Install elasticsearch with your favorite package manager: 
-
-Example on Debian based distributions 
-(after adding the elasticsearch repository):
-
-```
-sudo apt-get install elasticsearch
-```
-
-* Install the ICU Analisys plugin for Elasticsearch
-
-```
-sudo bin/plugin install elasticsearch/elasticsearch-analysis-icu/2.5.0
-```
-
-And restart Elasticsearch
-
-**NOTE**
-on Debian based distributions the `plugin` command is located in:
-
-`/usr/share/elasticsearch/bin/plugin`
-
-## TODO
-
-* Tests :)
-* Check how the response coming from google changes to handle corner cases
-* Localize the analyzers based on configuration (Currently the `de_analyzer` is
-  hardcoded)
-* <del>Add the OpenStreetMap importer script<del>
-* Timeouts
-* Unify responses
-* Code organization
-* ...etc
