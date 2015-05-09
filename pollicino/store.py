@@ -3,6 +3,7 @@
 import abc
 
 import elasticsearch
+from elasticsearch.helpers import bulk as es_bulk
 
 from pollicino.exceptions import StoreDataNotFound
 from pollicino.response import ElasticsearchResponse
@@ -123,6 +124,20 @@ class Elasticsearch(Backend):
         # TTL harcoded to 30 days per google policy
         self.backend.index(
             index=self.index, doc_type=self.doc_type, body=body, ttl=self.ttl)
+
+    def _prepare_bulk(self, docs):
+        actions = {}
+        for doc in docs:
+            actions = {'_op_type': 'index',
+                       '_index': 'pollicino',
+                       '_type': 'address',
+                       'doc': doc}
+            yield actions
+
+    def bulk(self, body):
+        bulk_actions = self._prepare_bulk(body)
+        es_bulk(self.backend, bulk_actions,
+                request_timeout=60, chunk_size=1000)
 
     def search(self, text):
         query = self.build_query(text)
