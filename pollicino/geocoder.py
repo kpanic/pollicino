@@ -84,14 +84,11 @@ class GeocoderClient(object):
                 if results:
                     responses.extend(results)
         except StoreDataNotFound:
+            print("Geocoding address: %s" % address)
             responses = self.geocoder.geocode(address)
             if not responses:
                 raise ValueError("Address not found %s", address)
-            # TODO: See how "redis autocomplete" works to figure out if there's
-            # the need only of a one key namespace
-            # If yes, it could be encapsulated in the Redis backend
-            for response in responses:
-                for store in self.storage:
-                    store.set(response)
+            for store in self.storage:
+                store.bulk(responses)
 
         return responses
