@@ -20,12 +20,16 @@ csv.field_size_limit(sys.maxsize)
 def prepare_addresses(address_components):
     for component in address_components:
         # If it has not street and coordinates are not float, skip
-        if not (all([component['street'],
-                     component['city']]) and not
-                (str.isalpha(component['lat']) or
-                 str.isalpha(component['lon']))):
+        if not all([component['street'], component['city']]):
             continue
 
+        address = {}
+        try:
+            lon = float(component['lon'].strip())
+            lat = float(component['lat'].strip())
+        except ValueError:
+            # Corrupted data, it's not a float, skip
+            continue
         full_address = ' '.join([
             component['street'],
             component['housenumber'],
@@ -34,7 +38,6 @@ def prepare_addresses(address_components):
             component['city'],
             ])
 
-        address = {}
         address.update({
             "full_address": full_address,
             "house_number": component['housenumber'],
@@ -42,7 +45,7 @@ def prepare_addresses(address_components):
             "suburb": component['suburb'],
             "postcode": component['postcode'],
             "road": component['street'],
-            "coordinates": [component['lon'], component['lat']]
+            "coordinates": [lon, lat]
         })
         yield address
 
