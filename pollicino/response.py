@@ -78,6 +78,7 @@ class GeocoderResponse(object):
             "suburb": address.suburb,
             "house_number": address.housenumber,
             "full_address": response.address,
-            "coordinates": [response.longitude, response.latitude]}
+            "coordinates": [response.longitude, response.latitude]
+        }
 
         return doc
