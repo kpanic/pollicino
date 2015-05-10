@@ -69,12 +69,8 @@ class GeocoderResponse(object):
         doc = {
             "city": address.city,
             "country": address.country,
-            "country_code": address.country_code,
-            "county": address.county,
-            "neighbourhood": address.neighbourhood,
             "postcode": address.postcode,
             "road": address.road,
-            "state": address.state,
             "suburb": address.suburb,
             "house_number": address.housenumber,
             "full_address": response.address,
