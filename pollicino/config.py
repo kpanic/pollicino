@@ -12,15 +12,14 @@ CONFIG = {
         {
             "google": {
                 "class": geocoder.Google,
+                "params": {"ttl": "30d"}
             }
         }
     ],
-    # Other storage could be plugged in, additionally to store.Elasticsearch
     "storage": [
         {
             "class": store.Elasticsearch,
-            "params": {"host": "localhost"},
-            "ttl": "30d"
+            "params": {"host": "localhost"}
         }
     ]
 }
