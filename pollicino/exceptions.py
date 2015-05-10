@@ -3,3 +3,7 @@
 
 class StoreDataNotFound(Exception):
     pass
+
+
+class AddressNotFound(Exception):
+    pass

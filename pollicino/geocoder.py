@@ -2,7 +2,7 @@
 
 import six
 
-from pollicino.exceptions import StoreDataNotFound
+from pollicino.exceptions import StoreDataNotFound, AddressNotFound
 from geopy import Nominatim, GoogleV3
 
 from pollicino.response import GeocoderResponse
@@ -87,7 +87,7 @@ class GeocoderClient(object):
             print("Geocoding address: %s" % address)
             responses = self.geocoder.geocode(address)
             if not responses:
-                raise ValueError("Address not found %s", address)
+                raise AddressNotFound("Address not found %s", address)
             for store in self.storage:
                 store.bulk(responses)
 
