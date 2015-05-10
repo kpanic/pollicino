@@ -134,7 +134,7 @@ class Elasticsearch(Backend):
             actions = {'_op_type': 'index',
                        '_index': 'pollicino',
                        '_type': 'address',
-                       'doc': doc}
+                       '_source': doc}
             ttl = doc.pop('ttl', None)
             if ttl is not None:
                 actions['_ttl'] = ttl
