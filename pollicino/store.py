@@ -121,7 +121,7 @@ class Elasticsearch(Backend):
             index=self.index, ignore=400, body=self.index_bootstrap)
 
     def set(self, body):
-        ttl = body.pop('ttl')
+        ttl = body.pop('ttl', None)
         if ttl is not None:
             body['_ttl'] = self.ttl
 
@@ -135,7 +135,7 @@ class Elasticsearch(Backend):
                        '_index': 'pollicino',
                        '_type': 'address',
                        'doc': doc}
-            ttl = doc.pop('ttl')
+            ttl = doc.pop('ttl', None)
             if ttl is not None:
                 actions['_ttl'] = ttl
             yield actions
