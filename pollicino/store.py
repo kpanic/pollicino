@@ -113,7 +113,6 @@ class Elasticsearch(Backend):
     }
 
     def __init__(self, **params):
-        self.ttl = params.pop("ttl", "30d")
         self.backend = elasticsearch.Elasticsearch(**params)
         # TODO: it's not cheap to try to create the index (and mappings) for
         # every lookup, even if we ignore it
@@ -122,9 +121,12 @@ class Elasticsearch(Backend):
             index=self.index, ignore=400, body=self.index_bootstrap)
 
     def set(self, body):
-        # TTL harcoded to 30 days per google policy
+        ttl = body.pop('ttl')
+        if ttl is not None:
+            body['_ttl'] = self.ttl
+
         self.backend.index(
-            index=self.index, doc_type=self.doc_type, body=body, ttl=self.ttl)
+            index=self.index, doc_type=self.doc_type, body=body)
 
     def _prepare_bulk(self, docs):
         actions = {}
@@ -133,6 +135,9 @@ class Elasticsearch(Backend):
                        '_index': 'pollicino',
                        '_type': 'address',
                        'doc': doc}
+            ttl = doc.pop('ttl')
+            if ttl is not None:
+                actions['_ttl'] = ttl
             yield actions
 
     def bulk(self, body):
