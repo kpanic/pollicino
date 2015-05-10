@@ -15,7 +15,7 @@ class OpenStreetMap(Nominatim):
         kwargs['exactly_one'] = False
         responses = super(OpenStreetMap, self).geocode(query, **kwargs)
         if responses:
-            geo_serializer = GeocoderResponse(provider='google')
+            geo_serializer = GeocoderResponse(provider='openstreetmap')
             responses = [geo_serializer.serialize(response)
                          for response in responses]
         return responses
