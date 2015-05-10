@@ -82,6 +82,7 @@ class Elasticsearch(Backend):
         },
         "mappings": {
             "address": {
+                "_ttl": {"enabled": True},
                 "_all": {
                     "analyzer": "autocomplete_analyzer",
                 },
