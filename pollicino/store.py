@@ -82,30 +82,37 @@ class Elasticsearch(Backend):
         },
         "mappings": {
             "address": {
+                "dynamic": "strict",
                 "_ttl": {"enabled": True},
                 "_all": {
                     "analyzer": "autocomplete_analyzer",
                 },
                 "properties": {
-                    "location": {
-                        "properties": {
-                            "country": {
-                                "type": "string",
-                            },
-                            "city": {
-                                "type": "string",
-                            },
-                            "suburb": {
-                                "type": "string",
-                            },
-                            "road": {
-                                "type": "string",
-                            },
-                            "coordinates": {
-                                "type": "geo_point",
-                                "index": "not_analyzed"
-                            }
-                        }
+                    "country": {
+                        "type": "string",
+                    },
+                    "city": {
+                        "type": "string",
+                    },
+                    "suburb": {
+                        "type": "string",
+                    },
+                    "road": {
+                        "type": "string",
+                    },
+                    "postcode": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                    },
+                    "house_number": {
+                        "type": "string",
+                        "index": "not_analyzed",
+                    },
+                    "coordinates": {
+                        "type": "geo_point",
+                    },
+                    "full_address": {
+                        "type": "string",
                     }
                 }
             }
