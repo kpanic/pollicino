@@ -12,7 +12,7 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 requirements = [
-    'geopy==1.9.1',
+    'geopy==1.10.0',
     'elasticsearch==1.4.0',
     'six==1.9.0',
     'Flask==0.10.1'

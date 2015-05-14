@@ -53,6 +53,8 @@ Example on Debian based distributions
 ```
 sudo apt-get install elasticsearch
 ```
+**NOTE**
+Elasticsearch version 1.5.x should be installed
 
 * Install the ICU Analisys plugin for Elasticsearch
 
@@ -66,6 +68,11 @@ And restart Elasticsearch
 on Debian based distributions the `plugin` command is located in:
 
 `/usr/share/elasticsearch/bin/plugin`
+
+* Install Python modules
+```
+python setup.py develop
+```
 
 ## Warming up the Elasticsearch storage from an OpenStreetMap data excerpt
 
