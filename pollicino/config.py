@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from pollicino import geocoder, store
+from pollicino import backend, store
 
 
 CONFIG = {
@@ -11,7 +11,7 @@ CONFIG = {
     "backends": [
         {
             "google": {
-                "class": geocoder.Google,
+                "class": backend.Google,
                 "params": {"ttl": "30d"}
             }
         }
