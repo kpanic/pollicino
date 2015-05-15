@@ -22,11 +22,10 @@ class GeocoderClientTestCase(unittest.TestCase):
                     }
                 }
             ],
-            "storage": [{
+            "storage": {
                 "class": self.store_mock,
-                "params": {"host": 'localhost'},
-                "ttl": "1"
-            }]
+                "params": {"host": 'localhost'}
+            }
         }
 
     def test_expect_geocoder_instance_with_minimal_config(self):
