@@ -16,10 +16,8 @@ CONFIG = {
             }
         }
     ],
-    "storage": [
-        {
-            "class": store.Elasticsearch,
-            "params": {"host": "localhost"}
-        }
-    ]
+    "storage": {
+        "class": store.Elasticsearch,
+        "params": {"host": "localhost"}
+    }
 }
