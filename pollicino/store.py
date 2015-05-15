@@ -82,7 +82,8 @@ class Elasticsearch(Backend):
                 "dynamic": "strict",
                 "_ttl": {"enabled": True},
                 "_all": {
-                    "analyzer": "autocomplete_analyzer",
+                    "index_analyzer": "autocomplete_analyzer",
+                    "search_analyzer": "standard"
                 },
                 "properties": {
                     "country": {
