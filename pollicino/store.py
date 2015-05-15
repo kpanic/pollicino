@@ -56,7 +56,7 @@ class Elasticsearch(Backend):
             "index": {
                 "analysis": {
                     "analyzer": {
-                        "autocomplete_analyzer": {
+                        "partial_address": {
                             "type": "custom",
                             "filter": [
                                 "icu_normalizer",
@@ -64,7 +64,16 @@ class Elasticsearch(Backend):
                                 "edge_ngram",
                             ],
                             "tokenizer": "icu_tokenizer"
-                        }
+                        },
+                        "full_address": {
+                            "filter": [
+                                "standard",
+                                "lowercase",
+                                "asciifolding"
+                            ],
+                            "type": "custom",
+                            "tokenizer": "standard"
+                        },
                     },
                     "filter": {
                         "edge_ngram": {
@@ -81,10 +90,6 @@ class Elasticsearch(Backend):
             "address": {
                 "dynamic": "strict",
                 "_ttl": {"enabled": True},
-                "_all": {
-                    "index_analyzer": "autocomplete_analyzer",
-                    "search_analyzer": "standard"
-                },
                 "properties": {
                     "country": {
                         "type": "string",
@@ -110,7 +115,18 @@ class Elasticsearch(Backend):
                         "type": "geo_point",
                     },
                     "full_address": {
-                        "type": "string",
+                        "fields": {
+                            "partial": {
+                                "type": "string",
+                                "search_analyzer": "full_address",
+                                "index_analyzer": "partial_address"
+                            },
+                            "complete": {
+                                "type": "string",
+                                "analyzer": "full_address"
+                            }
+                        },
+                        "type": "multi_field"
                     }
                 }
             }
@@ -163,14 +179,35 @@ class Elasticsearch(Backend):
 
     def build_query(self, text):
         query = {
+            "sort": [
+                "_score"
+            ],
             "query": {
                 "filtered": {
                     "query": {
-                        "match": {
-                            "_all": {
-                                "query": text,
-                                "operator": "and",
-                            }
+                        "bool": {
+                            "should": [
+                                {
+                                    "match": {
+                                        "full_address.complete": {
+                                            "boost": 5,
+                                            "analyzer": "standard",
+                                            "query": text,
+                                            "fuzziness": "auto",
+                                            "type": "phrase_prefix"
+                                        }
+                                    }
+                                },
+                                {
+                                    "match": {
+                                        "full_address.partial": {
+                                            "boost": 1,
+                                            "query": text,
+                                            "analyzer": "standard"
+                                        }
+                                    }
+                                },
+                            ]
                         }
                     }
                 }
