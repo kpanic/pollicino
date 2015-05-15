@@ -53,17 +53,12 @@ class GeocoderClient(object):
 
     def geocode(self, address):
         try:
-            responses = []
-            for store in self.storage:
-                results = store.search(address)
-                if results:
-                    responses.extend(results)
+            results = self.storage.search(address)
         except StoreDataNotFound:
             print("Geocoding address: %s" % address)
-            responses = self.geocoder.geocode(address)
-            if not responses:
+            results = self.geocoder.geocode(address)
+            if not results:
                 raise AddressNotFound("Address not found %s", address)
-            for store in self.storage:
-                store.bulk(responses)
+            self.storage.bulk(results)
 
-        return responses
+        return results

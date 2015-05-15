@@ -17,14 +17,11 @@ class Store(object):
         if storage is None:
             raise KeyError('Specify a "storage" entry in your config')
 
-        storage_instances = []
-        for store in storage:
-            storage_class = store['class']
-            params = store.get('params')
-            storage_instance = storage_class(**params)
-            storage_instances.append(storage_instance)
+        storage_class = storage['class']
+        params = storage.get('params')
+        storage_instance = storage_class(**params)
 
-        return storage_instances
+        return storage_instance
 
 
 class Backend(object):

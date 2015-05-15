@@ -56,5 +56,5 @@ with open(data_path) as fd:
     addresses = prepare_addresses(reader)
 
     print("Bulk indexing...")
-    store[0].bulk(addresses)
+    store.bulk(addresses)
     print("Import done.")
