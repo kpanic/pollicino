@@ -57,6 +57,7 @@ $(function() {
         },
         select: function(event, ui) {
             map.setView(new L.LatLng(ui.item.id[1], ui.item.id[0]), 19);
+            L.marker([ui.item.id[1], ui.item.id[0]]).addTo(map)
             $("#info").text(ui.item.label + " " + ui.item.id[1] + " " + ui.item.id[0]);
             return false;
         },
