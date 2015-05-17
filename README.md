@@ -15,6 +15,10 @@ present.
 The current (and only) storage used is Elasticsearch, there might be different
 storage support in the future. For instance, redis.
 
+## Example interface for the API
+
+![geocode](img/pollicino.gif)
+
 ## Do-not-use (yet ;)) (really)
 
 ```python
@@ -134,7 +138,3 @@ in this repo):
 
 These are just the first two entries, I truncated the rest of the response for brevity.
 By default the results returned are 10.
-
-Note that you should see from the browser a drop down with matching results
-from OpenStreetMap or the Google Maps API if the address has been not found in
-the storage.
