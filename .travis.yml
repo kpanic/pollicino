@@ -7,6 +7,9 @@ python:
   - "3.3"
   - "2.7"
 
+services:
+  - elasticsearch
+
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -r requirements.txt -r dev.txt
 

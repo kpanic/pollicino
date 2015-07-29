@@ -124,13 +124,13 @@ class Elasticsearch(Backend):
         self.backend.indices.create(
             index=self.index, ignore=400, body=self.index_bootstrap)
 
-    def set(self, body):
+    def set(self, body, id=None):
         ttl = body.pop('ttl', None)
         if ttl is not None:
             body['_ttl'] = self.ttl
 
         self.backend.index(
-            index=self.index, doc_type=self.doc_type, body=body)
+            index=self.index, doc_type=self.doc_type, body=body, id=id)
 
     def _prepare_bulk(self, docs):
         actions = {}
@@ -177,3 +177,11 @@ class Elasticsearch(Backend):
         }
 
         return query
+
+    def delete(self, id):
+        self.backend.delete(index=self.index, doc_type=self.doc_type,
+                            id=id)
+
+    def get(self, id):
+        return self.backend.get(index=self.index, doc_type=self.doc_type,
+                                id=id)
