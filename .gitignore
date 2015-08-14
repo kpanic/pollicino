@@ -43,6 +43,6 @@ output/*/index.html
 docs/_build
 
 # Do not ignore the excerpt
-!data/excerpt_berlin_streets.csv
-# data/berlin_streets.csv it's too big to put in github
-data/berlin_streets.csv
+!data/excerpt_berlin_streets.json
+# data/berlin_streets.json it's too big to put in github
+data/berlin_streets.json
