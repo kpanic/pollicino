@@ -7,8 +7,10 @@ python:
   - "3.3"
   - "2.7"
 
-services:
-  - elasticsearch
+before_install:
+  - curl -L -O https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-2.3.1.deb && sudo dpkg -i --force-confnew elasticsearch-2.3.1.deb
+  - sudo service elasticsearch start
+
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install: pip install -r requirements.txt -r dev.txt
