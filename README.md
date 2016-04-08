@@ -49,24 +49,15 @@ print result
 
 ## System requirements to be installed
 
-* Install elasticsearch with your favorite package manager: 
-
-Example on Debian based distributions 
-(after adding the elasticsearch repository):
-
-```
-sudo apt-get install elasticsearch
-```
-**NOTE**
-Elasticsearch version 1.5.x should be installed
+* Download Elasticsearch 2.3.x
 
 * Install the ICU Analisys plugin for Elasticsearch
 
-```
-sudo bin/plugin install elasticsearch/elasticsearch-analysis-icu/2.5.0
-```
+    sudo /usr/share/elasticsearch/bin/plugin install analysis-icu
 
-And restart Elasticsearch
+  on debian systems
+
+* Restart Elasticsearch
 
 **NOTE**
 on Debian based distributions the `plugin` command is located in:
@@ -98,43 +89,4 @@ To play with the demo, launch the development server:
 
 `python examples/api.py`
 
-When pointing your browser to http://localhost:5000 you should see an input box.
-
-If you would start to type *Kasta*, a response coming from the API
-should be similar to this one (when using the excerpt of OpenStreetMap provided
-in this repo):
-
-```javascript
-[
-    {
-        "city": "",
-        "coordinates": [
-            "7.0119376",
-            "51.4605600"
-        ],
-        "full_address": "Kastanienallee   ",
-        "house_number": "",
-        "postcode": "",
-        "road": "Kastanienallee",
-        "suburb": ""
-    },
-    {
-        "city": "",
-        "coordinates": [
-            "8.6034984",
-            "52.3848947"
-        ],
-        "full_address": "Kastanienweg   ",
-        "house_number": "",
-        "postcode": "",
-        "road": "Kastanienweg",
-        "suburb": ""
-    }
-
- [...]
-
-]
-```
-
-These are just the first two entries, I truncated the rest of the response for brevity.
-By default the results returned are 10.
+And point your browser to http://localhost:5000
