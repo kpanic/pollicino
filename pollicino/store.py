@@ -169,6 +169,7 @@ class Elasticsearch(Backend):
                             "_all": {
                                 "query": text,
                                 "operator": "and",
+                                "analyzer": "standard",
                             }
                         }
                     }
