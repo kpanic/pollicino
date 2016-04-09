@@ -1,5 +1,5 @@
 wheel==0.23.0
 Flask==0.10.1
-geopy==1.10.0
-elasticsearch==1.4.0
+geopy==1.11.0
+elasticsearch==2.2.0
 six==1.9.0
