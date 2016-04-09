@@ -81,9 +81,6 @@ class Elasticsearch(Backend):
             "address": {
                 "dynamic": "strict",
                 "_ttl": {"enabled": True},
-                "_all": {
-                    "analyzer": "autocomplete_analyzer"
-                },
                 "properties": {
                     "country": {
                         "type": "string",
@@ -110,6 +107,7 @@ class Elasticsearch(Backend):
                     },
                     "full_address": {
                         "type": "string",
+                        "analyzer": "autocomplete_analyzer"
                     }
                 }
             }
@@ -166,7 +164,7 @@ class Elasticsearch(Backend):
                 "filtered": {
                     "query": {
                         "match": {
-                            "_all": {
+                            "full_address": {
                                 "query": text,
                                 "operator": "and",
                                 "analyzer": "standard",
