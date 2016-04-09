@@ -10,6 +10,7 @@ python:
 before_install:
   - curl -L -O https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-2.3.1.deb && sudo dpkg -i --force-confnew elasticsearch-2.3.1.deb
   - sudo service elasticsearch start
+  - wget --retry-connrefused --no-check-certificate -T 60 localhost:9200 -O /dev/null
 
 
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
