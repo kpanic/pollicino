@@ -51,7 +51,7 @@ class ElasticsearchIntegrationTestCase(unittest.TestCase):
 
         self.assertEqual(response[0], self.address)
 
-    @unittest.skip("Revisit me later on")
+    @unittest.skip("Fails on travis, passed locally, skip for now")
     def test_storage_partial_complete(self):
         address = "Lands"
 
